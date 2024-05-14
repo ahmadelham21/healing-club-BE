@@ -18,9 +18,8 @@ import lombok.NoArgsConstructor;
 @Table(name = TableName.PICTURE_TABLE)
 public class Picture {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE,generator = "picture_seq")
-    @SequenceGenerator(name = "picture_seq",sequenceName = "picture_seq",allocationSize = 1)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @ManyToOne
     @JoinColumn(name = "hotel_id")
