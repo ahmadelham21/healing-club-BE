@@ -24,7 +24,6 @@ public class HotelFacility {
     private Hotel hotel;
 
     @ManyToOne
-    @JsonBackReference
     @JoinColumn(name = "facility_id")
     private Facility facility;
 }

@@ -24,8 +24,5 @@ public class Facility {
     @Column(name = "name",length = 50)
     private String name;
 
-    @OneToMany(mappedBy = "facility")
-    @JsonManagedReference
-    private List<HotelFacility> hotelFacilities;
 
 }
