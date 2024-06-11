@@ -2,13 +2,12 @@ package com.example.healingclub.model.entity;
 
 
 import com.example.healingclub.constant.TableName;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -20,10 +19,12 @@ public class HotelFacility {
     private String id;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
     @ManyToOne
+    @JsonBackReference
     @JoinColumn(name = "facility_id")
     private Facility facility;
 }
