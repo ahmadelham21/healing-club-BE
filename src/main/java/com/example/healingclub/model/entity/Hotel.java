@@ -29,11 +29,11 @@ public class Hotel {
     @Column(name = "address",length = 100)
     private String address;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Picture> pictures;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel" ,cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<HotelFacility> hotelFacilities;
 
