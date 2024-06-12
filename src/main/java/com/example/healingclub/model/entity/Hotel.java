@@ -4,14 +4,12 @@ package com.example.healingclub.model.entity;
 import com.example.healingclub.constant.TableName;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,11 +29,11 @@ public class Hotel {
     @Column(name = "address",length = 100)
     private String address;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Picture> pictures;
 
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel" ,cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<HotelFacility> hotelFacilities;
 
