@@ -2,6 +2,7 @@ package com.example.healingclub.service.impl;
 
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
+import com.example.healingclub.dto.response.HotelResponse;
 import com.example.healingclub.entity.Facility;
 import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.entity.HotelFacility;
@@ -30,14 +31,36 @@ public class HotelServiceImpl implements HotelService {
     private final FacilityService facilityService;
 
     @Override
-    public Hotel getById(String id) {
-        return hotelRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Data not found"));
+    public HotelResponse getById(String id) {
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
+
+
+        List<String> urlList = hotel.getPictures().stream().map(
+                Picture::getUrl
+        ).toList();
+
+        List<String> Facilitylist = hotel.getHotelFacilities().stream().map(
+                hotelFacility -> {
+                    return hotelFacility.getFacility().getName();
+                }
+        ).toList();
+
+       return HotelResponse.builder()
+                    .id(hotel.getId())
+                    .name(hotel.getName())
+                    .rating(hotel.getRating())
+                    .address(hotel.getAddress())
+                    .pictures(urlList)
+                    .facility(Facilitylist)
+                    .build();
+
+
     }
 
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public Hotel create(HotelRequest request) {
+    public HotelResponse create(HotelRequest request) {
 
         Hotel hotel = Hotel.builder()
                 .name(request.getName())
@@ -63,8 +86,26 @@ public class HotelServiceImpl implements HotelService {
 
         hotel.setPictures(picture);
 
+        List<String> urlList = hotel.getPictures().stream().map(
+                Picture::getUrl
+        ).toList();
 
-        return hotel;
+        List<String> Facilitylist = hotel.getHotelFacilities().stream().map(
+                hotelFacility -> {
+                    return hotelFacility.getFacility().getName();
+                }
+        ).toList();
+
+
+
+        return HotelResponse.builder()
+                .id(hotel.getId())
+                .name(hotel.getName())
+                .rating(hotel.getRating())
+                .address(hotel.getAddress())
+                .pictures(urlList)
+                .facility(Facilitylist)
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -78,5 +119,10 @@ public class HotelServiceImpl implements HotelService {
     public void deleteById(String id) {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
         hotelRepository.delete(hotel);
+        hotel.getPictures().forEach(
+                picture -> {
+                    pictureService.deletePictureFromImageKit(picture.getFileId());
+                }
+        );
     }
 }

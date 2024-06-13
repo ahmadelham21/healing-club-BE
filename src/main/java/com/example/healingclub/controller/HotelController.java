@@ -4,7 +4,9 @@ package com.example.healingclub.controller;
 import com.example.healingclub.constant.ApiUrl;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
+import com.example.healingclub.dto.response.BaseResponse;
 import com.example.healingclub.dto.response.CommonResponse;
+import com.example.healingclub.dto.response.HotelResponse;
 import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.service.HotelService;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -29,11 +31,11 @@ public class HotelController {
 
 
     @PostMapping
-    public ResponseEntity<CommonResponse<Hotel>> create(
+    public ResponseEntity<BaseResponse> create(
             @RequestPart(name = "file")List<MultipartFile> image,
             @RequestPart(name = "hotel_request")String jsonHotelrequest
             ){
-        CommonResponse.CommonResponseBuilder<Hotel> hotelBuilder = CommonResponse.builder();
+        CommonResponse.CommonResponseBuilder<HotelResponse> hotelBuilder = CommonResponse.builder();
 
         try {
             HotelRequest hotelRequest = objectMapper.readValue(jsonHotelrequest, new TypeReference<>(){
@@ -47,7 +49,7 @@ public class HotelController {
             pictureRequest.setImage(image);
             hotelRequest.setPictures(pictureRequest);
 
-            Hotel hotel = hotelService.create(hotelRequest);
+            HotelResponse hotel = hotelService.create(hotelRequest);
             hotelBuilder.message("Successfully create data");
             hotelBuilder.statusCode(HttpStatus.OK.value());
             hotelBuilder.data(hotel);
@@ -66,12 +68,12 @@ public class HotelController {
     }
 
     @GetMapping(path = ApiUrl.PATH_VAR_ID)
-    public ResponseEntity<CommonResponse<Hotel>> getById(@PathVariable String id){
-        Hotel hotel = hotelService.getById(id);
-        CommonResponse<Hotel> response = CommonResponse.<Hotel>builder()
+    public ResponseEntity<CommonResponse<HotelResponse>> getById(@PathVariable String id){
+        HotelResponse hotelResponse = hotelService.getById(id);
+        CommonResponse<HotelResponse> response = CommonResponse.<HotelResponse>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Successfully get data")
-                .data(hotel)
+                .data(hotelResponse)
                 .build();
         return ResponseEntity.ok(response);
     }

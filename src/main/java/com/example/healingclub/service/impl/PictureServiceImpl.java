@@ -4,6 +4,8 @@ import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.entity.Picture;
 import com.example.healingclub.repository.PictureRepository;
 import com.example.healingclub.service.PictureService;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.imagekit.sdk.ImageKit;
 import io.imagekit.sdk.models.FileCreateRequest;
 import io.imagekit.sdk.models.results.Result;
@@ -30,15 +32,27 @@ public class PictureServiceImpl implements PictureService {
     @Override
     public List<Picture> create(PictureRequest pictureRequest) {
 
-           return  pictureRequest.getImage().stream().map(
+           return pictureRequest.getImage().stream().map(
                     image -> {
                         try {
                             String filename = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
                             FileCreateRequest fileCreateRequest = new FileCreateRequest(image.getBytes(), filename);
                             Result result = imageKit.upload(fileCreateRequest);
-                            Picture picture = new Picture();
-                            picture.setUrl(result.getUrl());
-                            picture.setHotel(pictureRequest.getHotel());
+
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            JsonNode raw = objectMapper.readTree(result.getRaw());
+                            String thumbnailUrl = raw.get("thumbnailUrl").asText();
+
+
+                            Picture picture = Picture.builder()
+                                    .hotel(pictureRequest.getHotel())
+                                    .url(result.getUrl())
+                                    .name(result.getName())
+                                    .fileId(result.getFileId())
+                                    .thumbnailUrl(thumbnailUrl)
+                                    .build();
+
+
                             return pictureRepository.save(picture);
                         } catch (Exception e) {
                             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload image", e);
@@ -47,6 +61,16 @@ public class PictureServiceImpl implements PictureService {
                     }
             ).toList();
 
+
+    }
+
+    @Override
+    public void deletePictureFromImageKit(String id) {
+        try {
+             imageKit.deleteFile(id);
+        }catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload image", e);
+        }
 
     }
 

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface PictureService {
     List<Picture> create(PictureRequest pictureRequest);
+    void deletePictureFromImageKit(String id);
 }
