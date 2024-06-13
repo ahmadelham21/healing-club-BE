@@ -1,6 +1,5 @@
 package com.example.healingclub.dto.response;
 
-
 import lombok.*;
 
 @Getter
@@ -8,8 +7,9 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CommonResponse <T> extends BaseResponse{
+public class CommonResponseWithPage<T> extends BaseResponse{
     private Integer statusCode;
     private String message;
     private T data;
+    private PagingResponse paging;
 }

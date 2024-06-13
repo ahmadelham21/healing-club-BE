@@ -1,7 +1,7 @@
 package com.example.healingclub.service;
 
 import com.example.healingclub.dto.request.HotelRequest;
-import com.example.healingclub.model.entity.Hotel;
+import com.example.healingclub.entity.Hotel;
 
 import java.util.List;
 

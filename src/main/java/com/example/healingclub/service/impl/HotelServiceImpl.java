@@ -2,16 +2,17 @@ package com.example.healingclub.service.impl;
 
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
-import com.example.healingclub.model.entity.Facility;
-import com.example.healingclub.model.entity.Hotel;
-import com.example.healingclub.model.entity.HotelFacility;
-import com.example.healingclub.model.entity.Picture;
+import com.example.healingclub.entity.Facility;
+import com.example.healingclub.entity.Hotel;
+import com.example.healingclub.entity.HotelFacility;
+import com.example.healingclub.entity.Picture;
 import com.example.healingclub.repository.HotelRepository;
 import com.example.healingclub.service.FacilityService;
 import com.example.healingclub.service.HotelFacilityService;
 import com.example.healingclub.service.HotelService;
 import com.example.healingclub.service.PictureService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,9 +59,9 @@ public class HotelServiceImpl implements HotelService {
 
         PictureRequest pictureRequest = request.getPictures();
         pictureRequest.setHotel(saveHotel);
-        Picture picture = pictureService.create(pictureRequest);
+        List<Picture> picture = pictureService.create(pictureRequest);
 
-        hotel.setPictures(List.of(picture));
+        hotel.setPictures(picture);
 
 
         return hotel;

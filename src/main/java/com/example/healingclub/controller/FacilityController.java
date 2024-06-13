@@ -3,12 +3,13 @@ package com.example.healingclub.controller;
 
 import com.example.healingclub.constant.ApiUrl;
 import com.example.healingclub.constant.ResponseMessage;
+import com.example.healingclub.dto.response.BaseResponse;
 import com.example.healingclub.dto.response.CommonResponse;
-import com.example.healingclub.model.entity.Facility;
+import com.example.healingclub.dto.response.CommonResponseWithPage;
+import com.example.healingclub.entity.Facility;
 import com.example.healingclub.service.FacilityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,9 +22,9 @@ public class FacilityController {
     private final FacilityService facilityService;
 
     @PostMapping
-    public ResponseEntity<CommonResponse<Facility>> createNewFacility(@RequestBody Facility request){
+    public ResponseEntity<BaseResponse> createNewFacility(@RequestBody Facility request){
         Facility newFacility = facilityService.create(request);
-        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
+        BaseResponse response = CommonResponse.<Facility>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.CREATED_FACILITY)
                 .data(newFacility)
@@ -32,9 +33,9 @@ public class FacilityController {
     }
 
     @GetMapping(path = ApiUrl.PATH_VAR_ID)
-    public ResponseEntity<CommonResponse<Facility>> getFacilityById(@PathVariable Long id){
+    public ResponseEntity<BaseResponse> getFacilityById(@PathVariable Long id){
         Facility facility = facilityService.getById(id);
-        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
+        BaseResponse response = CommonResponse.<Facility>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.GET_FACILITY)
                 .data(facility)
@@ -43,9 +44,9 @@ public class FacilityController {
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponse<List<Facility>>> getAllFacility(){
+    public ResponseEntity<BaseResponse> getAllFacility(){
         List<Facility> facilityList = facilityService.getAll();
-        CommonResponse<List<Facility>> response = CommonResponse.<List<Facility>>builder()
+        BaseResponse response = CommonResponse.<List<Facility>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.GET_FACILITY)
                 .data(facilityList)
@@ -54,9 +55,9 @@ public class FacilityController {
     }
 
     @PutMapping
-    public ResponseEntity<CommonResponse<Facility>> updateFacility(@RequestBody Facility facility){
+    public ResponseEntity<BaseResponse> updateFacility(@RequestBody Facility facility){
         Facility updateFacility = facilityService.update(facility);
-        CommonResponse<Facility> response = CommonResponse.<Facility>builder()
+        BaseResponse response = CommonResponse.<Facility>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.UPDATE_FACILITY)
                 .data(updateFacility)
@@ -65,12 +66,13 @@ public class FacilityController {
     }
 
     @DeleteMapping(path = ApiUrl.PATH_VAR_ID)
-    public ResponseEntity<CommonResponse<?>> deleteFacility(@PathVariable Long id){
+    public ResponseEntity<BaseResponse> deleteFacility(@PathVariable Long id){
         facilityService.deleteById(id);
 
-        CommonResponse<?> response = CommonResponse.builder()
+        BaseResponse response = CommonResponse.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.DELETE_FACILITY)
+                .data("no data")
                 .build();
 
         return ResponseEntity.ok(response);

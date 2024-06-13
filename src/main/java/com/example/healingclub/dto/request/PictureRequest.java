@@ -1,13 +1,14 @@
 package com.example.healingclub.dto.request;
 
 
-import com.example.healingclub.model.entity.Hotel;
-import com.example.healingclub.model.entity.Picture;
+import com.example.healingclub.entity.Hotel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,8 +16,5 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 public class PictureRequest {
     private Hotel hotel;
-    private MultipartFile image;
-
-
-
+    private List<MultipartFile> image;
 }

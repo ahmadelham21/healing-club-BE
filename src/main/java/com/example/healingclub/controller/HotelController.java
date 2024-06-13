@@ -5,7 +5,7 @@ import com.example.healingclub.constant.ApiUrl;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.dto.response.CommonResponse;
-import com.example.healingclub.model.entity.Hotel;
+import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.service.HotelService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,7 +30,7 @@ public class HotelController {
 
     @PostMapping
     public ResponseEntity<CommonResponse<Hotel>> create(
-            @RequestPart(name = "file")MultipartFile image,
+            @RequestPart(name = "file")List<MultipartFile> image,
             @RequestPart(name = "hotel_request")String jsonHotelrequest
             ){
         CommonResponse.CommonResponseBuilder<Hotel> hotelBuilder = CommonResponse.builder();

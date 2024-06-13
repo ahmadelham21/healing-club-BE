@@ -1,4 +1,4 @@
-package com.example.healingclub.model.entity;
+package com.example.healingclub.entity;
 
 
 import com.example.healingclub.constant.TableName;
@@ -6,24 +6,24 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = TableName.PICTURE_TABLE)
-public class Picture {
+@Table(name = TableName.FACILITY_HOTEL_TABLE)
+public class HotelFacility {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
     @JsonBackReference
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
 
-    @Column(name = "url")
-    private String url;
+    @ManyToOne
+    @JoinColumn(name = "facility_id")
+    private Facility facility;
 }
