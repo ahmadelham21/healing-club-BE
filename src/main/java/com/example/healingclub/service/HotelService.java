@@ -10,7 +10,7 @@ public interface HotelService {
 
     HotelResponse create(HotelRequest request);
     HotelResponse getById(String id);
-    List<Hotel> getAll();
+    List<HotelResponse> getAll();
     void deleteById(String id);
 
 }

@@ -68,7 +68,7 @@ public class HotelController {
     }
 
     @GetMapping(path = ApiUrl.PATH_VAR_ID)
-    public ResponseEntity<CommonResponse<HotelResponse>> getById(@PathVariable String id){
+    public ResponseEntity<BaseResponse> getById(@PathVariable String id){
         HotelResponse hotelResponse = hotelService.getById(id);
         CommonResponse<HotelResponse> response = CommonResponse.<HotelResponse>builder()
                 .statusCode(HttpStatus.OK.value())
@@ -79,9 +79,9 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<CommonResponse<List<Hotel>>> getAll(){
-        List<Hotel> hotelList = hotelService.getAll();
-        CommonResponse<List<Hotel>> response = CommonResponse.<List<Hotel>>builder()
+    public ResponseEntity<BaseResponse> getAll(){
+        List<HotelResponse> hotelList = hotelService.getAll();
+        BaseResponse response = CommonResponse.<List<HotelResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message("Successfully get data")
                 .data(hotelList)

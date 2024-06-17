@@ -121,9 +121,37 @@ public class HotelServiceImpl implements HotelService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<Hotel> getAll() {
+    public List<HotelResponse> getAll() {
 
-        return hotelRepository.findAll();
+       return hotelRepository.findAll().stream().map(
+                hotel -> {
+                    List<String> facilities = hotel.getHotelFacilities().stream().map(
+                            facility -> {
+                                return facility.getFacility().getName();
+                            }
+                    ).toList();
+
+                    List<PictureResponse> pictureResponses = hotel.getPictures().stream().map(
+                            picture -> {
+                                return PictureResponse.builder()
+                                        .url(picture.getUrl())
+                                        .thumbnailUrl(picture.getThumbnailUrl())
+                                        .build();
+                            }
+                    ).toList();
+
+
+                    return  HotelResponse.builder()
+                            .id(hotel.getId())
+                            .name(hotel.getName())
+                            .rating(hotel.getRating())
+                            .address(hotel.getAddress())
+                            .pictures(pictureResponses)
+                            .facility(facilities)
+                            .build();
+                }
+        ).toList();
+
     }
 
     @Transactional(rollbackFor = Exception.class)
