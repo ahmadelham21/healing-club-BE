@@ -29,6 +29,10 @@ public class Hotel {
     @Column(name = "address",length = 100)
     private String address;
 
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private City city;
+
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private List<Picture> pictures;
