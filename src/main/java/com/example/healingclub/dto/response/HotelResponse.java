@@ -1,4 +1,5 @@
 package com.example.healingclub.dto.response;
+import com.example.healingclub.entity.Picture;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -20,7 +21,7 @@ public class HotelResponse {
     private String name;
     private Double rating;
     private String address;
-    private List<String> pictures;
+    private List<PictureResponse> pictures;
     private List<String> facility;
 
 

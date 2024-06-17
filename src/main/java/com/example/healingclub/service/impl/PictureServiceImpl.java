@@ -69,7 +69,7 @@ public class PictureServiceImpl implements PictureService {
         try {
              imageKit.deleteFile(id);
         }catch (Exception e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to upload image", e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to delete image", e);
         }
 
     }

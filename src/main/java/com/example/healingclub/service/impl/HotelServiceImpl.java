@@ -3,6 +3,7 @@ package com.example.healingclub.service.impl;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.dto.response.HotelResponse;
+import com.example.healingclub.dto.response.PictureResponse;
 import com.example.healingclub.entity.Facility;
 import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.entity.HotelFacility;
@@ -35,8 +36,13 @@ public class HotelServiceImpl implements HotelService {
         Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
 
 
-        List<String> urlList = hotel.getPictures().stream().map(
-                Picture::getUrl
+        List<PictureResponse> urlList = hotel.getPictures().stream().map(
+                picture -> {
+                    return PictureResponse.builder()
+                            .url(picture.getUrl())
+                            .thumbnailUrl(picture.getThumbnailUrl())
+                            .build();
+                }
         ).toList();
 
         List<String> Facilitylist = hotel.getHotelFacilities().stream().map(
@@ -86,8 +92,13 @@ public class HotelServiceImpl implements HotelService {
 
         hotel.setPictures(picture);
 
-        List<String> urlList = hotel.getPictures().stream().map(
-                Picture::getUrl
+        List<PictureResponse> urlList = hotel.getPictures().stream().map(
+                image -> {
+                    return PictureResponse.builder()
+                            .url(image.getUrl())
+                            .thumbnailUrl(image.getThumbnailUrl())
+                            .build();
+                }
         ).toList();
 
         List<String> Facilitylist = hotel.getHotelFacilities().stream().map(
@@ -111,6 +122,7 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(readOnly = true)
     @Override
     public List<Hotel> getAll() {
+
         return hotelRepository.findAll();
     }
 
