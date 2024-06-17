@@ -18,6 +18,8 @@ public class HotelRequest {
 
     private String address;
 
+    private String cityId;
+
     private PictureRequest pictures;
 
     private List<Long> facilityId;

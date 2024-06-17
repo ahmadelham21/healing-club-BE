@@ -15,7 +15,7 @@ public class ErrorController {
     public ResponseEntity<BaseResponse> responseResponseStatusException(ResponseStatusException exception){
         BaseResponse response = CommonResponseWithoutData.builder()
                 .statusCode(exception.getStatusCode().value())
-                .message(exception.getMessage())
+                .message(exception.getReason())
                 .build();
         return ResponseEntity.status(exception.getStatusCode()).body(response);
     }

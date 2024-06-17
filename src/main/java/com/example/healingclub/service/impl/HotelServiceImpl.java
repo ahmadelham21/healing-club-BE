@@ -5,15 +5,9 @@ import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.dto.response.HotelResponse;
 import com.example.healingclub.dto.response.PictureResponse;
-import com.example.healingclub.entity.Facility;
-import com.example.healingclub.entity.Hotel;
-import com.example.healingclub.entity.HotelFacility;
-import com.example.healingclub.entity.Picture;
+import com.example.healingclub.entity.*;
 import com.example.healingclub.repository.HotelRepository;
-import com.example.healingclub.service.FacilityService;
-import com.example.healingclub.service.HotelFacilityService;
-import com.example.healingclub.service.HotelService;
-import com.example.healingclub.service.PictureService;
+import com.example.healingclub.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -31,6 +25,7 @@ public class HotelServiceImpl implements HotelService {
     private final PictureService pictureService;
     private final HotelFacilityService hotelFacilityService;
     private final FacilityService facilityService;
+    private final CityService cityService;
 
     @Override
     public HotelResponse getById(String id) {
@@ -57,6 +52,7 @@ public class HotelServiceImpl implements HotelService {
                     .name(hotel.getName())
                     .rating(hotel.getRating())
                     .address(hotel.getAddress())
+                    .city(hotel.getCity().getName())
                     .pictures(urlList)
                     .facility(Facilitylist)
                     .build();
@@ -68,11 +64,13 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public HotelResponse create(HotelRequest request) {
+        City city = cityService.getById(request.getCityId());
 
         Hotel hotel = Hotel.builder()
                 .name(request.getName())
                 .rating(request.getRating())
                 .address(request.getAddress())
+                .city(city)
                 .build();
         Hotel saveHotel = hotelRepository.saveAndFlush(hotel);
 
@@ -114,6 +112,7 @@ public class HotelServiceImpl implements HotelService {
                 .id(hotel.getId())
                 .name(hotel.getName())
                 .rating(hotel.getRating())
+                .city(hotel.getCity().getName())
                 .address(hotel.getAddress())
                 .pictures(urlList)
                 .facility(Facilitylist)
@@ -147,6 +146,7 @@ public class HotelServiceImpl implements HotelService {
                             .name(hotel.getName())
                             .rating(hotel.getRating())
                             .address(hotel.getAddress())
+                            .city(hotel.getCity().getName())
                             .pictures(pictureResponses)
                             .facility(facilities)
                             .build();
