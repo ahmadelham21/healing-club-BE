@@ -1,10 +1,5 @@
 package com.example.healingclub.dto.request;
 
-import com.example.healingclub.model.entity.HotelFacility;
-import com.example.healingclub.model.entity.Picture;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

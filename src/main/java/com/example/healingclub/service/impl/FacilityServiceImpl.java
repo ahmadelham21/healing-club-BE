@@ -1,6 +1,6 @@
 package com.example.healingclub.service.impl;
 
-import com.example.healingclub.model.entity.Facility;
+import com.example.healingclub.entity.Facility;
 import com.example.healingclub.repository.FacilityRepository;
 import com.example.healingclub.service.FacilityService;
 import lombok.RequiredArgsConstructor;

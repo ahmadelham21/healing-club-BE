@@ -1,15 +1,16 @@
 package com.example.healingclub.service;
 
 import com.example.healingclub.dto.request.HotelRequest;
-import com.example.healingclub.model.entity.Hotel;
+import com.example.healingclub.dto.response.HotelResponse;
+import com.example.healingclub.entity.Hotel;
 
 import java.util.List;
 
 public interface HotelService {
 
-    Hotel create(HotelRequest request);
-    Hotel getById(String id);
-    List<Hotel> getAll();
+    HotelResponse create(HotelRequest request);
+    HotelResponse getById(String id);
+    List<HotelResponse> getAll();
     void deleteById(String id);
 
 }

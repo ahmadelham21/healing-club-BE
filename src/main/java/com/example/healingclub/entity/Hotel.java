@@ -1,4 +1,4 @@
-package com.example.healingclub.model.entity;
+package com.example.healingclub.entity;
 
 
 import com.example.healingclub.constant.TableName;
@@ -28,6 +28,10 @@ public class Hotel {
 
     @Column(name = "address",length = 100)
     private String address;
+
+    @ManyToOne
+    @JoinColumn(name = "hotel_id")
+    private City city;
 
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE)
     @JsonManagedReference

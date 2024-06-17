@@ -1,6 +1,6 @@
 package com.example.healingclub.service;
 
-import com.example.healingclub.model.entity.Facility;
+import com.example.healingclub.entity.Facility;
 
 import java.util.List;
 

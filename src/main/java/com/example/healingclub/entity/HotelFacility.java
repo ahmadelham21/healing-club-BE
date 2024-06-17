@@ -1,4 +1,4 @@
-package com.example.healingclub.model.entity;
+package com.example.healingclub.entity;
 
 
 import com.example.healingclub.constant.TableName;

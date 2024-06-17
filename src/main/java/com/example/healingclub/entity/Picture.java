@@ -1,4 +1,4 @@
-package com.example.healingclub.model.entity;
+package com.example.healingclub.entity;
 
 
 import com.example.healingclub.constant.TableName;
@@ -19,6 +19,12 @@ public class Picture {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(name = "file_id")
+    private String fileId;
+
+    @Column(name = "file_name")
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "hotel_id")
     @JsonBackReference
@@ -26,4 +32,7 @@ public class Picture {
 
     @Column(name = "url")
     private String url;
+
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
 }
