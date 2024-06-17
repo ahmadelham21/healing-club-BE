@@ -49,4 +49,10 @@ public class CityServiceImpl implements CityService {
         City city = cityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
         cityRepository.delete(city);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public City getByName(String name) {
+        return cityRepository.findByNameIgnoreCase(name).orElseThrow(() ->new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
+    }
 }
