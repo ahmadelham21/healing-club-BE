@@ -6,16 +6,15 @@ import com.example.healingclub.constant.ErrorMassage;
 import com.example.healingclub.constant.ResponseMessage;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
-import com.example.healingclub.dto.response.BaseResponse;
-import com.example.healingclub.dto.response.CommonResponse;
-import com.example.healingclub.dto.response.CommonResponseWithoutData;
-import com.example.healingclub.dto.response.HotelResponse;
+import com.example.healingclub.dto.request.SearchHotelRequest;
+import com.example.healingclub.dto.response.*;
 import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.service.HotelService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -82,12 +81,70 @@ public class HotelController {
     }
 
     @GetMapping
-    public ResponseEntity<BaseResponse> getAll(){
-        List<HotelResponse> hotelList = hotelService.getAll();
-        BaseResponse response = CommonResponse.<List<HotelResponse>>builder()
+    public ResponseEntity<BaseResponse> getAll(
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size,
+            @RequestParam(name = "sortBy", defaultValue = "name") String sortBy,
+            @RequestParam(name = "direction", defaultValue = "asc") String direction,
+            @RequestParam(name = "name", required = false) String name,
+            @RequestParam(name = "city", required = false) String city
+
+    ){
+        SearchHotelRequest searchHotelRequest = SearchHotelRequest.builder()
+                .direction(direction)
+                .page(page)
+                .size(size)
+                .sortBy(sortBy)
+                .name(name)
+                .cityName(city)
+                .build();
+
+        Page<Hotel> hotelList = hotelService.getAll(searchHotelRequest);
+
+        PagingResponse pagingResponse = PagingResponse.builder()
+                .totalPages(hotelList.getTotalPages())
+                .totalElements(hotelList.getTotalElements())
+                .page(hotelList.getPageable().getPageNumber() + 1)
+                .size(hotelList.getPageable().getPageSize())
+                .hasNext(hotelList.hasNext())
+                .hasPrevious(hotelList.hasPrevious())
+                .build();
+
+        List<HotelResponse> hotelResponseList = hotelList.getContent().stream().map(
+                hotel -> {
+                    List<String> facilities = hotel.getHotelFacilities().stream().map(
+                            facility -> {
+                                return facility.getFacility().getName();
+                            }
+                    ).toList();
+
+                    List<PictureResponse> pictureResponses = hotel.getPictures().stream().map(
+                            picture -> {
+                                return PictureResponse.builder()
+                                        .url(picture.getUrl())
+                                        .thumbnailUrl(picture.getThumbnailUrl())
+                                        .build();
+                            }
+                    ).toList();
+
+
+                    return HotelResponse.builder()
+                            .id(hotel.getId())
+                            .name(hotel.getName())
+                            .rating(hotel.getRating())
+                            .address(hotel.getAddress())
+                            .city(hotel.getCity().getName())
+                            .pictures(pictureResponses)
+                            .facility(facilities)
+                            .build();
+                }
+        ).toList();
+
+        BaseResponse response = CommonResponseWithPage.<List<HotelResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.GET_HOTEL)
-                .data(hotelList)
+                .data(hotelResponseList)
+                .paging(pagingResponse)
                 .build();
         return ResponseEntity.ok(response);
     }

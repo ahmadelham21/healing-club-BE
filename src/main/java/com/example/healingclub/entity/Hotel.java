@@ -30,7 +30,7 @@ public class Hotel {
     private String address;
 
     @ManyToOne
-    @JoinColumn(name = "hotel_id")
+    @JoinColumn(name = "city_id")
     private City city;
 
     @OneToMany(mappedBy = "hotel",cascade = CascadeType.REMOVE)
