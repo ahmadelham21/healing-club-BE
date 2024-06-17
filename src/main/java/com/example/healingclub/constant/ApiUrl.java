@@ -6,4 +6,5 @@ public class ApiUrl {
     public final static String HOTEL_API = BASE_URL + "/hotels";
     public final static String PATH_VAR_ID =  "/{id}";
 
+    public static final String CITY_API = BASE_URL + "/cities";
 }
