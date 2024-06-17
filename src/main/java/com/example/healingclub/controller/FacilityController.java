@@ -6,6 +6,7 @@ import com.example.healingclub.constant.ResponseMessage;
 import com.example.healingclub.dto.response.BaseResponse;
 import com.example.healingclub.dto.response.CommonResponse;
 import com.example.healingclub.dto.response.CommonResponseWithPage;
+import com.example.healingclub.dto.response.CommonResponseWithoutData;
 import com.example.healingclub.entity.Facility;
 import com.example.healingclub.service.FacilityService;
 import lombok.RequiredArgsConstructor;
@@ -69,10 +70,9 @@ public class FacilityController {
     public ResponseEntity<BaseResponse> deleteFacility(@PathVariable Long id){
         facilityService.deleteById(id);
 
-        BaseResponse response = CommonResponse.builder()
+        BaseResponse response = CommonResponseWithoutData.builder()
                 .statusCode(HttpStatus.OK.value())
                 .message(ResponseMessage.DELETE_FACILITY)
-                .data("no data")
                 .build();
 
         return ResponseEntity.ok(response);

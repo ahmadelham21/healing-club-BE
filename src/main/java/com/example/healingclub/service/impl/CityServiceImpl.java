@@ -1,5 +1,6 @@
 package com.example.healingclub.service.impl;
 
+import com.example.healingclub.constant.ErrorMassage;
 import com.example.healingclub.entity.City;
 import com.example.healingclub.repository.CityRepository;
 import com.example.healingclub.service.CityService;
@@ -26,7 +27,7 @@ public class CityServiceImpl implements CityService {
     @Transactional(readOnly = true)
     @Override
     public City getById(String id) {
-        return cityRepository.findById(id).orElseThrow(()-> new  ResponseStatusException(HttpStatus.NOT_FOUND,"Data not found"));
+        return cityRepository.findById(id).orElseThrow(()-> new  ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -38,14 +39,14 @@ public class CityServiceImpl implements CityService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public City update(City city) {
-        cityRepository.findById(city.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"Data not found"));
+        cityRepository.findById(city.getId()).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,ErrorMassage.NOT_FOUND));
         return cityRepository.saveAndFlush(city);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(String id) {
-        City city = cityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
+        City city = cityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
         cityRepository.delete(city);
     }
 }

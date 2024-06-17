@@ -1,5 +1,6 @@
 package com.example.healingclub.service.impl;
 
+import com.example.healingclub.constant.ErrorMassage;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.dto.response.HotelResponse;
@@ -33,7 +34,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public HotelResponse getById(String id) {
-        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
 
 
         List<PictureResponse> urlList = hotel.getPictures().stream().map(
@@ -157,7 +158,7 @@ public class HotelServiceImpl implements HotelService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(String id) {
-        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
+        Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
         hotelRepository.delete(hotel);
         hotel.getPictures().forEach(
                 picture -> {

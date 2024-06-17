@@ -1,5 +1,6 @@
 package com.example.healingclub.service.impl;
 
+import com.example.healingclub.constant.ErrorMassage;
 import com.example.healingclub.entity.Facility;
 import com.example.healingclub.repository.FacilityRepository;
 import com.example.healingclub.service.FacilityService;
@@ -26,7 +27,7 @@ public class FacilityServiceImpl implements FacilityService {
     @Transactional(readOnly = true)
     @Override
     public Facility getById(Long id) {
-        return facilityRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Data not found"));
+        return facilityRepository.findById(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
     }
 
     @Transactional(readOnly = true)
@@ -38,14 +39,14 @@ public class FacilityServiceImpl implements FacilityService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Facility update(Facility facility) {
-        facilityRepository.findById(facility.getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"Data not found"));
+        facilityRepository.findById(facility.getId()).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,ErrorMassage.NOT_FOUND));
         return facilityRepository.saveAndFlush(facility);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(Long id) {
-        Facility facility = facilityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Data not found"));
+        Facility facility = facilityRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMassage.NOT_FOUND));
         facilityRepository.delete(facility);
     }
 }

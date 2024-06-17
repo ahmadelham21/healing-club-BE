@@ -2,10 +2,13 @@ package com.example.healingclub.controller;
 
 
 import com.example.healingclub.constant.ApiUrl;
+import com.example.healingclub.constant.ErrorMassage;
+import com.example.healingclub.constant.ResponseMessage;
 import com.example.healingclub.dto.request.HotelRequest;
 import com.example.healingclub.dto.request.PictureRequest;
 import com.example.healingclub.dto.response.BaseResponse;
 import com.example.healingclub.dto.response.CommonResponse;
+import com.example.healingclub.dto.response.CommonResponseWithoutData;
 import com.example.healingclub.dto.response.HotelResponse;
 import com.example.healingclub.entity.Hotel;
 import com.example.healingclub.service.HotelService;
@@ -50,7 +53,7 @@ public class HotelController {
             hotelRequest.setPictures(pictureRequest);
 
             HotelResponse hotel = hotelService.create(hotelRequest);
-            hotelBuilder.message("Successfully create data");
+            hotelBuilder.message(ResponseMessage.CREATED_HOTEL);
             hotelBuilder.statusCode(HttpStatus.OK.value());
             hotelBuilder.data(hotel);
             return ResponseEntity.status(HttpStatus.OK).body(hotelBuilder.build());
@@ -59,7 +62,7 @@ public class HotelController {
 
 
         }catch (Exception e){
-            hotelBuilder.message("internal server error");
+            hotelBuilder.message(ErrorMassage.INTERNAL_SERVER_ERROR);
             hotelBuilder.statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(hotelBuilder.build());
 
@@ -72,7 +75,7 @@ public class HotelController {
         HotelResponse hotelResponse = hotelService.getById(id);
         CommonResponse<HotelResponse> response = CommonResponse.<HotelResponse>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully get data")
+                .message(ResponseMessage.GET_HOTEL)
                 .data(hotelResponse)
                 .build();
         return ResponseEntity.ok(response);
@@ -83,18 +86,18 @@ public class HotelController {
         List<HotelResponse> hotelList = hotelService.getAll();
         BaseResponse response = CommonResponse.<List<HotelResponse>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully get data")
+                .message(ResponseMessage.GET_HOTEL)
                 .data(hotelList)
                 .build();
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(path = ApiUrl.PATH_VAR_ID)
-    public ResponseEntity<CommonResponse<String>> deleteById(@PathVariable String id){
+    public ResponseEntity<BaseResponse> deleteById(@PathVariable String id){
         hotelService.deleteById(id);
-        CommonResponse<String> response = CommonResponse.<String>builder()
+        BaseResponse response = CommonResponseWithoutData.<String>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully delete data")
+                .message(ResponseMessage.DELETE_HOTEL)
                 .build();
 
         return ResponseEntity.ok(response);

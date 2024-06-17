@@ -1,9 +1,11 @@
 package com.example.healingclub.controller;
 
 import com.example.healingclub.constant.ApiUrl;
+import com.example.healingclub.constant.ResponseMessage;
 import com.example.healingclub.dto.response.BaseResponse;
 import com.example.healingclub.dto.response.CommonResponse;
 import com.example.healingclub.dto.response.CommonResponseWithPage;
+import com.example.healingclub.dto.response.CommonResponseWithoutData;
 import com.example.healingclub.entity.City;
 import com.example.healingclub.service.CityService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +27,7 @@ public class CityController {
         City newCity = cityService.create(city);
         BaseResponse response = CommonResponse.<City>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully create data")
+                .message(ResponseMessage.CREATED_CITY)
                 .data(newCity)
                 .build();
         return ResponseEntity.ok(response);
@@ -35,7 +37,7 @@ public class CityController {
     public ResponseEntity<BaseResponse> getCityById(@PathVariable String id){
         BaseResponse response = CommonResponse.<City>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully get data")
+                .message(ResponseMessage.GET_CITY)
                 .data(cityService.getById(id))
                 .build();
         return ResponseEntity.ok(response);
@@ -45,7 +47,7 @@ public class CityController {
     public ResponseEntity<BaseResponse> getAllCity(){
         BaseResponse response = CommonResponseWithPage.<List<City>>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully get data")
+                .message(ResponseMessage.GET_CITY)
                 .data(cityService.getAll())
                 .build();
         return ResponseEntity.ok(response);
@@ -55,7 +57,7 @@ public class CityController {
     public ResponseEntity<BaseResponse> updateCity(@RequestBody City city){
         BaseResponse response = CommonResponse.<City>builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully update data")
+                .message(ResponseMessage.UPDATE_CITY)
                 .data(cityService.update(city))
                 .build();
         return ResponseEntity.ok(response);
@@ -64,9 +66,9 @@ public class CityController {
     @DeleteMapping(path = ApiUrl.PATH_VAR_ID)
     public ResponseEntity<BaseResponse> deleteCity(@PathVariable String id){
         cityService.deleteById(id);
-        BaseResponse response = CommonResponse.<City>builder()
+        BaseResponse response = CommonResponseWithoutData.builder()
                 .statusCode(HttpStatus.OK.value())
-                .message("Successfully delete data with id" + id)
+                .message(ResponseMessage.DELETE_CITY)
                 .build();
         return ResponseEntity.ok(response);
     }
