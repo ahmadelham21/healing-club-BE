@@ -21,6 +21,7 @@ public class HotelResponse {
     private String name;
     private Double rating;
     private String address;
+    private String city;
     private List<PictureResponse> pictures;
     private List<String> facility;
 
